@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>GAME</title>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js"></script>
+    </head>
+    <body>
+
+    <button onclick="backButton()">Go Back</button>
+
+    <script>
+
+    function backButton() {
+        window.location.href = `../index.html`;
+    }
+
+    window.onload = function() {
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+        var player;
+        var speed = 4;
+        var Floor;
+        var Enemy;
+        var Enemyx;
+        var max = 10;
+        var min = -10;
+        var score = 0;
+        var scoreText;
+
+        function preload () {
+            game.load.image('player', 'player1.png');
+            game.load.image('Floor', 'Floor.png');
+            game.load.image('Enemy', 'Enemy.png');
+            game.stage.backgroundColor = '#D3D3D3';
+        
+        }
+
+        function create () {
+            console.log(Phaser);
+            Enemyx = Math.random(-10, 10);
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+            player = game.add.sprite(320, 240, 'player');
+            player.anchor.setTo(0.5, 0.5);
+            Floor = game.add.sprite(320, 240, 'Floor');
+            Floor.anchor.setTo(0.5, -5);
+            Enemy = game.add.sprite(320, 240, 'Enemy');
+            Enemy.anchor.setTo(Enemyx, 2);
+            game.physics.enable(player, Phaser.Physics.ARCADE);
+            game.physics.enable(Floor, Phaser.Physics.ARCADE);
+            game.physics.enable(Enemy, Phaser.Physics.ARCADE);
+            player.body.gravity.y = 350;
+            Floor.body.immovable = true;
+            Enemy.body.immovable = true;
+            scoreText = game.add.text(5, 5, 'Points: 0', { font: '20px Arial', fill: '#ff0000' });
+            player.checkWorldBounds = true;
+            player.events.onOutOfBounds.add(restart, this);
+
+        }
+
+        function update () {
+            game.physics.arcade.collide(player, Floor);
+            game.physics.arcade.collide(player, Enemy, hitEnemy);   
+
+            if (score > 9){
+                Floor.kill();
+            }
+
+            if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+            {
+                player.x -= speed;
+            }
+             if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
+            {
+                player.y -= speed;
+            }
+             if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+            {
+                player.y += speed;
+            }
+             if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+            {
+                player.x += speed;
+                
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+                restart(); 
+            }
+
+        }
+        function hitEnemy(){
+            Enemy.kill();
+            score += 1;
+            scoreText.setText('Points: '+score);
+            console.log("hi");
+            console.log(Enemyx);
+            Enemyx = (Math.random() * (max - min)) + min;
+            Enemy = game.add.sprite(320, 240, 'Enemy');
+            Enemy.anchor.setTo(Enemyx, 2);
+            game.physics.enable(Enemy, Phaser.Physics.ARCADE);
+            Enemy.body.immovable = true;
+        }
+        function restart(){
+            alert("Restart?");
+            location.reload();
+        }
+        
+
+    };
+
+    </script>
+
+    </body>
+</html>
