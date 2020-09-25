@@ -4,6 +4,8 @@ var body;
 var lastRender = 0;
 var width;
 var height;
+var jump = false;
+var gravitySpeed = 10;
 
 window.onload = function setup() {
     console.log("Game is Loaded!");
@@ -12,15 +14,17 @@ window.onload = function setup() {
     playerData = {
         x: 0,
         y: 0,
+        width: 0,
+        height: 0,
         pressedKeys: {
             left: false,
             right: false,
             up: false,
             down: false
         }
-    }
+}
     width = window.innerWidth;
-    height = window.innerHeight;
+    height = window.innerHeight;d
     getPlayer();
 }
 
@@ -32,28 +36,27 @@ var keyMap = {
 }
 
 function getPlayer() {
-    player = body;
+    let template = body;
     Array.from(body.children).forEach(e => {
         let eb = e.getBoundingClientRect();
-        let sb = player.getBoundingClientRect();
+        let sb = template.getBoundingClientRect();
         if (eb.width < sb.width && eb.width > 0) {
-            player = e;
+            template = e;
         }
     });
-    console.log(player);
+    console.log(template);
+    player = template.cloneNode();
+    playerData.x = template.getBoundingClientRect().x;
+    playerData.y = template.getBoundingClientRect().y;
+    playerData.width = template.getBoundingClientRect().width;
+    playerData.height = template.getBoundingClientRect().height;
+    template.disabled = true;
+    template.style.color = "lightgray";
+    player.innerHTML = template.innerHTML;
+    player.setAttribute("id", "player");
     player.style.boxShadow = "0px 0px 5px 2px lightgreen";
-    let replacement = document.createElement('div');
-    console.log(player.offsetWidth);
-    replacement.style.width = `${player.getBoundingClientRect().width}px`;
-    replacement.style.height = `${player.getBoundingClientRect().height}px`;
-    // replacement.style.display = "block";
-    replacement.style.backgroundColor = "blue"
-    console.log(player.getBoundingClientRect());
-    body.insertBefore(replacement, body.children[0]);
-    playerData.x = player.getBoundingClientRect().x;
-    playerData.y = player.getBoundingClientRect().y - player.getBoundingClientRect().height;
-
     player.style.position = "absolute"
+    body.appendChild(player);
     startGame();
 }
 
@@ -71,8 +74,10 @@ function update(progress) {
     if (playerData.pressedKeys.right) {
         playerData.x += progress;
     }
-    if (playerData.pressedKeys.up) {
+    if (playerData.pressedKeys.up && jump == true) {
         playerData.y -= progress;
+        gravitySpeed = 15;
+        jump = false;
     }
     if (playerData.pressedKeys.down) {
         playerData.y += progress;
@@ -92,8 +97,30 @@ function update(progress) {
         playerData.y += window.height;
     }
 
+    gravity(progress);
+
     player.style.left = `${playerData.x}px`;
     player.style.top = `${playerData.y}px`;
+}
+
+function gravity(progress) {
+    let collide = false;
+    Array.from(body.children).forEach(child => {
+        bounds = child.getBoundingClientRect();
+        if (bounds.width < 5 || child.id == "player") {return;}
+
+        if (playerData.x > bounds.x && playerData.x < bounds.x + bounds.width) {
+            if (playerData.y + playerData.height > bounds.y && playerData.y < bounds.y) {
+                collide = true;
+            }
+        }
+    });
+    if (!collide) {
+        playerData.y += progress - gravitySpeed;
+    } else {
+        jump = true;
+    }
+    if (gravitySpeed > 3) { gravitySpeed -= 0.2}
 }
 
 function loop(timestamp) {
