@@ -8,8 +8,21 @@ list.forEach(l => {
     description.className = 'desc';
     btn.innerHTML = `${l.name}`;
     btn.className = 'navBtn';
+
+    let info = document.createElement('P');
+    info.innerHTML = `${l.info}`;
+    info.className = 'info hid'
+
     btn.onclick = function(){window.open(`https://${l.url}`)};
+    span.onclick = function(e){
+        e.path.forEach(p => {
+            if (p.tagName == 'SPAN') {
+                p.getElementsByClassName("info")[0].classList.toggle('hid');
+            }
+        })
+    };
     span.appendChild(btn);
     span.appendChild(description);
+    span.appendChild(info);
     document.body.appendChild(span);
 })
