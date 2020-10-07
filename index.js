@@ -1,4 +1,7 @@
 import {list} from './repoList.js'
+var listElement = document.createElement('DVI');
+listElement.className = 'listDiv'
+
 list.forEach(l => {
     var span = document.createElement('SPAN');
     var btn = document.createElement("BUTTON");
@@ -24,5 +27,6 @@ list.forEach(l => {
     span.appendChild(btn);
     span.appendChild(description);
     span.appendChild(info);
-    document.body.appendChild(span);
+    listElement.appendChild(span);
 })
+document.body.appendChild(listElement);

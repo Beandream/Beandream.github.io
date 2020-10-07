@@ -1,8 +1,13 @@
 BODY{
     text-align: center;
 }
+.listDiv{
+    margin: auto;
+    text-align: center;
+}
 
 .navBtn {
+    margin: 1vh;
 	background-color:rgb(109, 57, 161);
 	border-radius:4px;
 	border:1px solid rgb(30, 12, 48);
@@ -33,20 +38,25 @@ BODY{
 	text-decoration:none;
 }
 .span {
+    max-width: fit-content;
+    min-width: max-content;
     user-select: none;
     background-color:rgb(165, 112, 219);
     display: block;
     border:5px solid rgb(30, 12, 48);
     border-radius:4px;
-    margin: 2vh;
-    text-align: center
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2vh;
+    text-align: center;
 }
 
 .info {
     padding: 2vh;
     text-align: left;
     font-size: 20px;
-    display: flex;
+    display: inherit;
+    max-width: fit-content;
 }
 
 .hid{
