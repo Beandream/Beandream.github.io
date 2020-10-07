@@ -39,7 +39,7 @@ BODY{
 }
 .span {
     max-width: fit-content;
-    min-width: max-content;
+    min-width: fit-content;
     user-select: none;
     background-color:rgb(165, 112, 219);
     display: block;
