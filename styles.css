@@ -4,11 +4,12 @@ BODY{
 .listDiv{
     margin: auto;
     text-align: center;
+    background-color: inherit;
 }
 
 .navBtn {
     margin: 1vh;
-	background-color:rgb(109, 57, 161);
+	background-color:rebeccapurple;
 	border-radius:4px;
 	border:1px solid rgb(30, 12, 48);
 	display:inline-block;
@@ -49,6 +50,7 @@ BODY{
     margin-right: auto;
     margin-top: 2vh;
     text-align: center;
+    height: auto;
 }
 
 .info {
@@ -57,10 +59,27 @@ BODY{
     font-size: 20px;
     display: inherit;
     max-width: fit-content;
+    opacity: 1;
+    animation: fadeIn 0.5s ease-in;
 }
 
 .hid{
     display: none;
+    opacity: 0;
 }
+
+@keyframes fadeIn {
+    0% {
+        display: none;
+        opacity: 0;
+        max-height: 0px;
+    }
+    100% {
+        display: inherit;
+        opacity: 1;
+        max-height: 50vh;
+    }
+}
+
 
       
