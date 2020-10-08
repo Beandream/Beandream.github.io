@@ -74,10 +74,12 @@ BODY{
         opacity: 0;
         max-height: 0px;
     }
+    50% {
+        max-height: 50vh;
+    }
     100% {
         display: inherit;
         opacity: 1;
-        max-height: 50vh;
     }
 }
 
